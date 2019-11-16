@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../scripts/d3.v5.js"></script>
+</head>
+
+<body>
+
+  <div id="container"></div>
+
+  <script>
+    const svg_width = 600;
+    const svg_height = 400;
+    const bar_width = 50;
+    const bar_padding = 5;
+
+    var dataset = [10, 20, 30, 40, 50];
+
+    var svg = d3.select("#container")
+      .append('svg')
+      .attr('width', svg_width)
+      .attr('height', svg_height);
+
+    svg.selectAll('rect')
+      .data(dataset)
+      .enter()
+      .append('rect')
+      .attr('x', function (d, i) {
+        return (bar_width + bar_padding) * i;
+      })
+      .attr('y', function (d) {
+        return svg_height - d;
+      })
+      .attr('width', bar_width)
+      .attr('height', function (d) {
+        return d;
+      })
+      .attr('fill', 'green')
+
+    svg.selectAll('text')
+      .data(dataset)
+      .enter()
+      .append('text')
+      .text(function (d) {
+        return d;
+      })
+      .attr('x', function (d, i) {
+        return (bar_width + bar_padding) * i;
+      })
+      .attr('y', function (d) {
+        return svg_height - d;
+      })
+      .attr('fill', function (d, i) {
+        if (d < 20) {
+          return 'red';
+        }
+      })
+      .attr('transform', function (d, i) {
+        if (d > 20) {
+          return 'translate(20,20)';
+        }
+      })
+
+  </script>
+
+</body>
+
+</html>

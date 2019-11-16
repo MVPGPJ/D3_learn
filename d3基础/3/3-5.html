@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../scripts/d3.v5.js"></script>
+</head>
+
+<body>
+
+  <div id="container"></div>
+
+
+  <script>
+    var dataset = [10, 20, 30, 40, 50];
+
+    var svg = d3.select("#container").append('svg')
+      .attr('width', 500)
+      .attr('height', 500);
+
+
+    var arc = d3.arc()
+      .innerRadius(50)
+      .outerRadius(100)
+      .padAngle(0.02);
+
+    var piedata = d3.pie()(dataset)
+    //生成颜色
+    var colors = d3.schemeCategory10.concat(d3.schemeCategory10);
+
+    svg.selectAll('path').data(piedata)
+      .enter()
+      .append('path')
+      .attr('transform', 'translate(200,200)')
+      .attr('d', function (d) {
+        return arc(d);
+      })
+      .attr('fill', function (d, i) {
+        return colors[i];
+      })
+
+
+  </script>
+
+</body>
+
+</html>

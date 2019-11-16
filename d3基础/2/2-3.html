@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../scripts/d3.v5.js"></script>
+  <style>
+    .app {
+      width: 600px;
+      height: 400px;
+      background: #efefef;
+    }
+
+    .bar {
+      display: inline-block;
+      width: 50px;
+      background: green;
+      margin-left: 5px;
+      vertical-align: bottom;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container" class="app">
+    <!-- <div class="bar"></div> -->
+  </div>
+
+
+  <script>
+    var dataset = [];
+    var container = d3.select("#container");
+
+    d3.csv('data.csv').then(function (data) {
+      console.log(data);
+      dataset = data.columns;
+      container.selectAll('div')
+        .data(dataset)
+        .enter()
+        .append("div")
+        .attr('class', 'bar')
+        .style('height', function (d) {
+          return d + "px";
+        })
+        .append("text")
+        .text(function (d) {
+          return d;
+        })
+        .style('color', 'white')
+        .style('tranform', 'translate(0,10)')
+
+
+    })
+
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

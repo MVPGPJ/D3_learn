@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="app"></div>
+    <button id="btn_add">add</button>
+    <button id='btn_update'>update</button>
+    <script>
+        const svg_width = 600;
+        const svg_height = 400;
+        const bar_width = 50;
+        // const bar_height = 50;
+        const bar_padding = 5;
+        const svg_padding = 20;
+        var sort_flag = false;
+
+        var dataset = [100, 200, 300, 400, 50]
+
+        var svg = d3.select('#app')
+            .append('svg')
+            .attr('width', svg_width)
+            .attr('height', svg_height)
+
+        var x_scale = d3.scaleBand()
+            .domain(d3.range(dataset.length))
+            .range([svg_padding, svg_width - svg_padding * 2])
+            .paddingInner(0.05)
+        var y_scale = d3.scaleLinear()
+            .domain([0, d3.max(dataset)])
+            .range([svg_height - svg_padding * 2, 0])
+
+        function sort() {
+            svg.selectAll('rect').sort(function (a, b) {
+                    return sort_flag ? d3.descending(a, b) : d3.ascending(a, b)
+                })
+                    .transition()
+                    .duration(1000)
+                    .attr('x', function (d, i) {
+                        return x_scale(i)
+                    })
+                    .attr('y', function (d) {
+                        return svg_height - y_scale(d)
+                    })
+                sort_flag = !sort_flag
+        }
+
+        svg.selectAll('rect')
+            .data(dataset)
+            .enter()
+            .append('rect')
+            .attr('x', function (d, i) {
+                return x_scale(i)
+            })
+            .attr('y', function (d) {
+                return svg_height - y_scale(d)
+            })
+            .attr('width', x_scale.bandwidth())
+            .attr('height', function (d) {
+                return y_scale(d)
+            })
+            .attr('fill', 'skyblue')
+            .on('mouseover', function () {
+                d3.select(this).attr('fill', 'red')
+            })
+            .on('mouseout', function () {
+                d3.select(this).attr('fill', 'skyblue')
+            })
+            .on('click', function () {
+                sort()
+            })
+
+        svg.selectAll('text')
+            .data(dataset)
+            .enter()
+            .append('text')
+            .text(function (d) {
+                return d
+            })
+            .attr('x', function (d, i) {
+                return x_scale(i) + x_scale.bandwidth() / 2
+            })
+            .attr('y', function (d) {
+                return svg_height - y_scale(d)
+            })
+            .attr('fill', function (d, i) {
+                if (d < 20) {
+                    return 'red'
+                } else {
+                    return 'orange'
+                }
+            })
+            .attr('transform', function (d, i) {
+                if (d > 20) {
+                    return 'translate(0,20)'
+                }
+            })
+            .style('text-anchor','middle')
+
+        function updated() {
+            x_scale.domain(d3.range(dataset.length))
+            y_scale.domain([0, d3.max(dataset)])    
+        }
+
+        d3.select('#btn_add')
+            .on('click', function () {
+                var num = Math.round(Math.random() * 300)
+                dataset.push(num)
+                updated()
+                var bars = svg.selectAll('rect')
+                    .data(dataset)
+
+                bars.enter()
+                    .append('rect')
+                    .attr('x', function (d, i) {
+                        return x_scale(i)
+                    })
+                    .attr('y', function (d) {
+                        return svg_height - y_scale(d)
+                    })
+                    .attr('width', x_scale.bandwidth())
+                    .attr('height', function (d) {
+                        return y_scale(d)
+                    })
+                    .merge(bars)
+                    .transition()
+                    .duration(1000)
+                    .attr('fill', 'skyblue')
+                    .attr('x', function (d, i) {
+                        return x_scale(i)
+                    })
+                    .attr('y', function (d) {
+                        return svg_height - y_scale(d)
+                    })
+                    .attr('width', x_scale.bandwidth())
+                    .attr('height', function (d) {
+                        return y_scale(d)
+                    })
+                    .on('mouseover', function () {
+                        d3.select(this).attr('fill', 'red')
+                    })
+                    .on('mouseout', function () {
+                        d3.select(this).attr('fill', 'skyblue')
+                    })
+                    .on('click', function () {
+                        svg.selectAll('rect').sort(function (a, b) {
+                            return sort_flag ? d3.descending(a, b) : d3.ascending(a, b)
+                        })
+                            .transition()
+                            .duration(1000)
+                            .attr('x', function (d, i) {
+                                return (bar_width + bar_padding) * i
+                            })
+                            .attr('y', function (d) {
+                                return svg_height - d
+                            })
+                        sort_flag = !sort_flag
+                    })
+
+            })
+    
+        d3.select('#btn_update')
+            .on('click',function(){
+                dateset = []
+                for(let i = 0; i <= 15 ; i++) {
+                    var num = Math.round(Math.random() * 300)
+                    dataset.push(num)
+                    updated()
+                }
+            })
+    </script>
+</body>
+
+</html>

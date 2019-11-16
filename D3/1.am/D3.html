@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <title>Document</title>
+    <style>
+        .app {
+            height: 500px;
+            width: 100%;
+            background-color: antiquewhite;
+            display: felx;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bar {
+            width: 50px;
+            display: inline-block;
+            background-color: skyblue;
+            margin: 2px;
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="app">
+        <!-- <div class="box"></div> -->
+    </div>
+    <script>
+        // d3选择器select,selectAll
+        // var dataset = [10,20,30,40,50,60,70]
+        var dataset
+        let csv = d3.csv('./data.csv').then(function (data) {
+            var dataset = data.columns
+
+            var app = d3.select('#app')
+
+            app
+                .selectAll('div')
+                .data(dataset)
+                .enter()
+                .append('div')
+                .attr('class', 'bar')
+                .style('height', function (item) {
+                    return item + 'px'
+                })
+                .append('text')
+                .text(function (d) {
+                    return d
+                })
+                .style('color', 'white')
+                .style('tranform', 'translate(0,10)')
+        })
+
+
+
+
+        // app
+        // .select()
+        // .selectAll('text')
+        // .data(dataset)
+        // .enter()
+        // .append('text')
+        // .text(function(d){
+        //     return d
+        // })
+
+
+        // app
+        // .selectAll('p')
+        // .data(dataset)
+        // .enter()
+        // .append('p')
+        // .text(function (d, i) {
+        //     return d
+        // })
+        // .style('color',function(d,i){
+        //     if(d>4){
+        //         return 'red'
+        //     }
+        // })
+
+        // app
+        // .append('p')
+        // .text('hello')
+        // .style('color','red')
+        // .style('font-size','30px')
+        // .attr('class','title')
+        // console.log(app)
+
+
+    </script>
+</body>
+
+</html>

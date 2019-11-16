@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../scripts/d3.v5.js"></script>
+</head>
+
+<body>
+  <div id="container" class="app">
+    <p></p>
+  </div>
+
+
+  <script>
+    var dataset = [10, 20, 30, 40, 50];
+    var container = d3.select("#container");
+    container
+      .selectAll('p')
+      .data(dataset)
+      .enter()
+      .append('p')
+      .text(function (d, i) {
+        console.log(d, i)
+        return d;
+      }).style('color', function (d) {
+        if (d > 20) {
+          return 'red';
+        }
+      })
+
+
+  </script>
+
+</body>
+
+</html>
